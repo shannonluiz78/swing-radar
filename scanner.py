@@ -56,56 +56,80 @@ def get_summary(sector):
     }
     return summaries.get(sector, "Showing strong institutional accumulation.")
 
-def generate_svg_chart(chart_data):
-    """Generates a responsive, professional SVG price chart from daily close data."""
+def generate_svg_candlestick_chart(chart_data):
+    """Generates a professional financial candlestick chart with timeline & price axis in pure SVG."""
     if not chart_data or len(chart_data) < 2:
-        return "<svg width='100%' height='200'><text x='20' y='100' fill='#666'>No chart data available</text></svg>"
+        return "<svg viewBox='0 0 650 240' width='100%' height='100%' style='background: #131722;'><text x='30' y='120' fill='#888'>No chart data available</text></svg>"
     
-    prices = [item['close'] for item in chart_data]
-    min_p = min(prices)
-    max_p = max(prices)
+    width = 650
+    height = 240
+    padding_top = 20
+    padding_bottom = 35
+    padding_left = 55
+    padding_right = 20
+    
+    usable_w = width - padding_left - padding_right
+    usable_h = height - padding_top - padding_bottom
+    
+    highs = [item['high'] for item in chart_data]
+    lows = [item['low'] for item in chart_data]
+    max_p = max(highs)
+    min_p = min(lows)
     p_range = max_p - min_p if max_p != min_p else 1.0
     
-    width = 600
-    height = 200
-    padding = 30
+    # Add 5% breathing room top and bottom
+    max_p += p_range * 0.05
+    min_p -= p_range * 0.05
+    p_range = max_p - min_p
     
-    usable_w = width - (padding * 2)
-    usable_h = height - (padding * 2)
+    candle_width = max(2, (usable_w / len(chart_data)) * 0.7)
     
-    points = []
-    for i, p in enumerate(prices):
-        x = padding + (i / (len(prices) - 1)) * usable_w
-        y = height - padding - ((p - min_p) / p_range) * usable_h
-        points.append(f"{x},{y}")
+    svg_elements = []
+    svg_elements.append(f"<svg viewBox='0 0 {width} {height}' width='100%' height='100%' style='background: #131722; border-radius: 6px; font-family: -apple-system, sans-serif;'>")
+    
+    # Grid lines & Price axis labels
+    for i in range(4):
+        p_val = min_p + (p_range / 3) * i
+        y_pos = height - padding_bottom - (i / 3) * usable_h
+        svg_elements.append(f"<line x1='{padding_left}' y1='{y_pos}' x2='{width - padding_right}' y2='{y_pos}' stroke='#2a2e39' stroke-dasharray='3' />")
+        svg_elements.append(f"<text x='{padding_left - 8}' y='{y_pos + 4}' fill='#787b86' font-size='10' text-anchor='end'>${p_val:.1f}</text>")
+    
+    # Render Candlesticks (Wicks and Bodies)
+    for i, day in enumerate(chart_data):
+        x = padding_left + (i + 0.5) * (usable_w / len(chart_data))
+        o = day['open']
+        h = day['high']
+        l = day['low']
+        c = day['close']
         
-    poly_points = " ".join(points)
-    first_x = padding
-    last_x = width - padding
-    bottom_y = height - padding
-    
-    area_points = f"{first_x},{bottom_y} {poly_points} {last_x},{bottom_y}"
-    
-    # Determine color (Green if net positive over period, else Red)
-    is_bullish = prices[-1] >= prices[0]
-    line_color = "#27ae60" if is_bullish else "#c0392b"
-    fill_color = "rgba(39, 174, 96, 0.15)" if is_bullish else "rgba(192, 57, 43, 0.15)"
-    
-    svg = f"""
-    <svg viewBox="0 0 {width} {height}" width="100%" height="100%" style="background: #131722; border-radius: 6px;">
-        <line x1="{padding}" y1="{padding}" x2="{width-padding}" y2="{padding}" stroke="#2a2e39" stroke-dasharray="4" />
-        <line x1="{padding}" y1="{height/2}" x2="{width-padding}" y2="{height/2}" stroke="#2a2e39" stroke-dasharray="4" />
-        <line x1="{padding}" y1="{height-padding}" x2="{width-padding}" y2="{height-padding}" stroke="#2a2e39" stroke-dasharray="4" />
+        y_high = height - padding_bottom - ((h - min_p) / p_range) * usable_h
+        y_low = height - padding_bottom - ((l - min_p) / p_range) * usable_h
+        y_open = height - padding_bottom - ((o - min_p) / p_range) * usable_h
+        y_close = height - padding_bottom - ((c - min_p) / p_range) * usable_h
         
-        <polygon points="{area_points}" fill="{fill_color}" />
+        is_bullish = c >= o
+        color = "#26a69a" if is_bullish else "#ef5350" # TradingView Green / Red
         
-        <polyline fill="none" stroke="{line_color}" stroke-width="2.5" points="{poly_points}" />
+        # Wick line
+        svg_elements.append(f"<line x1='{x}' y1='{y_high}' x2='{x}' y2='{y_low}' stroke='{color}' stroke-width='1.5' />")
         
-        <text x="{width - padding - 5}" y="{padding + 12}" fill="#d1d4dc" font-size="11" text-anchor="end" font-family="sans-serif">${max_p:.2f}</text>
-        <text x="{width - padding - 5}" y="{height - padding - 5}" fill="#d1d4dc" font-size="11" text-anchor="end" font-family="sans-serif">${min_p:.2f}</text>
-    </svg>
-    """
-    return svg
+        # Candle body
+        body_top = min(y_open, y_close)
+        body_height = max(abs(y_open - y_close), 1.5)
+        svg_elements.append(f"<rect x='{x - candle_width/2}' y='{body_top}' width='{candle_width}' height='{body_height}' fill='{color}' rx='1' />")
+    
+    # Timeline Axis Labels (Start, Middle, End Dates)
+    if len(chart_data) > 0:
+        start_date = chart_data[0]['time']
+        mid_date = chart_data[len(chart_data)//2]['time']
+        end_date = chart_data[-1]['time']
+        
+        svg_elements.append(f"<text x='{padding_left}' y='{height - 12}' fill='#787b86' font-size='10' text-anchor='start'>{start_date}</text>")
+        svg_elements.append(f"<text x='{width/2}' y='{height - 12}' fill='#787b86' font-size='10' text-anchor='middle'>{mid_date}</text>")
+        svg_elements.append(f"<text x='{width - padding_right}' y='{height - 12}' fill='#787b86' font-size='10' text-anchor='end'>{end_date}</text>")
+        
+    svg_elements.append("</svg>")
+    return "".join(svg_elements)
 
 def scan_market():
     print("Starting daily market scan using Tiingo...")
@@ -113,11 +137,11 @@ def scan_market():
     start_date = (datetime.datetime.now() - datetime.timedelta(days=100)).strftime("%Y-%m-%d")
     
     fallback_chart = [
-        {"time": "2026-07-01", "close": 100.0},
-        {"time": "2026-07-02", "close": 102.5},
-        {"time": "2026-07-03", "close": 101.0},
-        {"time": "2026-07-06", "close": 105.0},
-        {"time": "2026-07-07", "close": 108.2}
+        {"time": "2026-07-01", "open": 100, "high": 105, "low": 98, "close": 102},
+        {"time": "2026-07-02", "open": 102, "high": 108, "low": 101, "close": 107},
+        {"time": "2026-07-03", "open": 107, "high": 111, "low": 104, "close": 109},
+        {"time": "2026-07-06", "open": 109, "high": 113, "low": 108, "close": 111},
+        {"time": "2026-07-07", "open": 111, "high": 116, "low": 110, "close": 114}
     ]
 
     for symbol, info in STOCKS_TO_SCAN.items():
@@ -140,11 +164,14 @@ def scan_market():
                 for day in data[-30:]:
                     chart_data.append({
                         "time": day["date"][:10],
+                        "open": round(day["open"], 2),
+                        "high": round(day["high"], 2),
+                        "low": round(day["low"], 2),
                         "close": round(day["close"], 2)
                     })
             
             technical_setup = f"📊 Chart Setup: Momentum breakout trending above the 50-day moving average (${round(ma_50, 2)})." if current_price >= ma_50 else f"📊 Chart Setup: Consolidating near the 50-day moving average (${round(ma_50, 2)})."
-            svg_chart = generate_svg_chart(chart_data)
+            svg_chart = generate_svg_candlestick_chart(chart_data)
 
             bullish_stocks.append({
                 "symbol": symbol,
@@ -197,7 +224,7 @@ def generate_html(stocks):
             <p class="info-row"><strong class="risk-text">Risk:</strong> {s['risk']}</p>
             
             <div class="technical-setup">{s['technical_setup']}</div>
-            <button class="btn-chart" onclick="toggleChart('chart-{s['symbol']}')">📊 View Chart</button>
+            <button class="btn-chart" onclick="toggleChart('chart-{s['symbol']}')">📊 View Candlestick Chart</button>
             <div id="chart-{s['symbol']}" class="chart-container">
                 {s['svg_chart']}
             </div>
@@ -232,7 +259,7 @@ def generate_html(stocks):
         .technical-setup { font-style: italic; color: #27ae60; font-weight: bold; margin-top: 15px; }
         button.btn-chart { background-color: var(--button-color); color: white; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.95em; font-weight: bold; margin-top: 15px; transition: background 0.2s; }
         button.btn-chart:hover { background-color: #2980b9; }
-        .chart-container { width: 100%; margin-top: 15px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; }
+        .chart-container { width: 100%; margin-top: 15px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; background: #131722; }
         @media (min-width: 650px) { body { padding: 20px; } .dashboard-container { padding: 30px; } button.btn-chart { width: auto; } .stock-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
@@ -270,7 +297,7 @@ def generate_html(stocks):
         
         <div class="technical-setup">HIGHLIGHT_TECHNICAL_PLACEHOLDER</div>
         
-        <button class="btn-chart" onclick="toggleChart('chart-HIGHLIGHT_SYMBOL_PLACEHOLDER')">📊 View Interactive Chart</button>
+        <button class="btn-chart" onclick="toggleChart('chart-HIGHLIGHT_SYMBOL_PLACEHOLDER')">📊 View Candlestick Chart</button>
         <div id="chart-HIGHLIGHT_SYMBOL_PLACEHOLDER" class="chart-container">
             HIGHLIGHT_SVG_CHART_PLACEHOLDER
         </div>
