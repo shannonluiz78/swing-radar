@@ -1,1 +1,202 @@
-<html><body><h1>No bullish setups found today (Thursday, July 23, 2026).</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swing-Trade Radar</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        :root { --primary-color: #2c3e50; --accent-color: #1abc9c; --button-color: #3498db; --bg-color: #f4f7f6; --card-bg: #ffffff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: var(--bg-color); padding: 10px; margin: 0; color: #333; }
+        .dashboard-container { max-width: 1000px; margin: auto; background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); box-sizing: border-box; }
+        h1 { color: var(--primary-color); font-size: 1.6em; margin-bottom: 10px; }
+        .market-pulse { background-color: #eef2f5; padding: 10px; border-radius: 6px; font-size: 0.9em; margin-bottom: 20px; border-left: 4px solid #7f8c8d; }
+        .section-title { font-size: 1.2em; color: var(--primary-color); margin-top: 25px; margin-bottom: 12px; font-weight: bold; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .highlight-box { background-color: #e8f8f5; padding: 18px; border-left: 6px solid var(--accent-color); margin-bottom: 25px; border-radius: 8px; }
+        .highlight-badge { background: var(--accent-color); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; text-transform: uppercase; float: right; }
+        .stock-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .stock-card { border: 1px solid #e1e8ed; padding: 16px; border-radius: 8px; background-color: #fff; }
+        .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .ticker { font-size: 1.2em; font-weight: bold; color: var(--primary-color); }
+        .company-name { color: #777; font-size: 0.9em; }
+        .info-row { margin: 8px 0; font-size: 0.92em; line-height: 1.4; }
+        .risk-text { color: #c0392b; }
+        .fundamental-box { background-color: #f4f6f9; border-left: 4px solid #2980b9; padding: 10px; border-radius: 4px; margin: 10px 0; font-size: 0.88em; line-height: 1.5; }
+        .target-box { background-color: #fdfbf7; border: 1px dashed #d4af37; padding: 10px; border-radius: 6px; margin: 12px 0; font-size: 0.9em; line-height: 1.5; }
+        .timeline-badge { background: #34495e; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8em; font-weight: bold; margin-right: 5px; }
+        .technical-setup { font-style: italic; color: #27ae60; font-weight: bold; margin-top: 15px; }
+        button.btn-chart { background-color: var(--button-color); color: white; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.95em; font-weight: bold; margin-top: 15px; transition: background 0.2s; }
+        button.btn-chart:hover { background-color: #2980b9; }
+        .chart-container { width: 100%; height: 300px; margin-top: 15px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; }
+        @media (min-width: 650px) { body { padding: 20px; } .dashboard-container { padding: 30px; } button.btn-chart { width: auto; } .stock-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <h1>📈 Swing-Trade Radar</h1>
+    <div class="market-pulse">
+        <strong>🗓 Latest Scan:</strong> Thursday, July 23, 2026 <br>
+        <strong>⚡ Market Pulse:</strong> Live Tiingo Data Feed | Technical Breakout & Moat Analysis Completed
+    </div>
+
+    <div class="highlight-box">
+        <span class="highlight-badge">Top Setup of the Day</span>
+        <h2>🌟 HIGHLIGHT: PANW (Palo Alto Networks)</h2>
+        <h3 style="margin-top:0; color:#555;">Current Price: $335.28</h3>
+        
+        <p class="info-row"><strong>Summary:</strong> Cybersecurity remains resilient as enterprise AI security budgets expand.</p>
+        
+        <div class="fundamental-box">
+            <strong>🏰 Economic Moat:</strong> Wide Moat (Market leader in next-gen firewalls)<br>
+            <strong>📊 5-Year Growth:</strong> High double-digit revenue compounding.<br>
+            <strong>💰 Financial Health:</strong> Strong balance sheet, robust operating cash flow.
+        </div>
+
+        <p class="info-row"><strong>Why Buy:</strong> Strong momentum, confirming institutional accumulation paired with stellar fundamentals.</p>
+        
+        <div class="target-box">
+            <strong>🎯 Analyst Price Targets & Forecast:</strong><br>
+            <span class="timeline-badge">12-Month Horizon</span> Low: $280.00 | Avg: $340.00 | High: $380.00<br>
+            <span class="timeline-badge">2-3 Month Goal</span> Short-term swing target heading towards Average estimate (340.00).
+        </div>
+
+        <p class="info-row"><strong class="risk-text">Risk Involved:</strong> High valuation multiple; vulnerable to tech pullbacks.</p>
+        
+        <div class="technical-setup">📊 Chart Setup: Momentum breakout trending above the 50-day moving average ($292.64).</div>
+        
+        <button class="btn-chart" id="btn-PANW" onclick='showChart("chart-PANW", "btn-PANW", [{"time": "2026-06-09", "open": 265.3, "high": 266.44, "low": 251.15, "close": 260.52}, {"time": "2026-06-10", "open": 258.81, "high": 266.72, "low": 254.43, "close": 263.22}, {"time": "2026-06-11", "open": 261.0, "high": 279.95, "low": 258.1, "close": 279.53}, {"time": "2026-06-12", "open": 276.94, "high": 281.98, "low": 271.49, "close": 279.62}, {"time": "2026-06-15", "open": 280.55, "high": 285.12, "low": 274.33, "close": 284.54}, {"time": "2026-06-16", "open": 283.2, "high": 283.64, "low": 275.06, "close": 279.9}, {"time": "2026-06-17", "open": 279.46, "high": 284.32, "low": 276.7, "close": 282.13}, {"time": "2026-06-18", "open": 285.6, "high": 288.88, "low": 276.46, "close": 287.78}, {"time": "2026-06-22", "open": 287.99, "high": 295.75, "low": 284.26, "close": 286.4}, {"time": "2026-06-23", "open": 285.72, "high": 292.14, "low": 282.52, "close": 290.92}, {"time": "2026-06-24", "open": 289.62, "high": 291.0, "low": 284.28, "close": 285.26}, {"time": "2026-06-25", "open": 289.01, "high": 295.54, "low": 285.27, "close": 293.09}, {"time": "2026-06-26", "open": 295.15, "high": 306.24, "low": 290.0, "close": 304.2}, {"time": "2026-06-29", "open": 309.83, "high": 332.88, "low": 305.33, "close": 332.0}, {"time": "2026-06-30", "open": 327.55, "high": 342.48, "low": 327.35, "close": 341.02}, {"time": "2026-07-01", "open": 345.55, "high": 358.1, "low": 341.0, "close": 352.04}, {"time": "2026-07-02", "open": 351.49, "high": 357.38, "low": 346.9, "close": 348.06}, {"time": "2026-07-06", "open": 338.96, "high": 368.17, "low": 337.69, "close": 357.53}, {"time": "2026-07-07", "open": 359.87, "high": 363.01, "low": 336.0, "close": 337.04}, {"time": "2026-07-08", "open": 336.8, "high": 336.8, "low": 314.95, "close": 320.59}, {"time": "2026-07-09", "open": 318.34, "high": 338.37, "low": 318.34, "close": 338.31}, {"time": "2026-07-10", "open": 338.48, "high": 340.13, "low": 323.85, "close": 325.91}, {"time": "2026-07-13", "open": 325.11, "high": 331.08, "low": 316.25, "close": 330.3}, {"time": "2026-07-14", "open": 330.8, "high": 353.68, "low": 330.29, "close": 352.89}, {"time": "2026-07-15", "open": 356.81, "high": 362.71, "low": 353.11, "close": 354.02}, {"time": "2026-07-16", "open": 357.06, "high": 360.44, "low": 347.04, "close": 353.99}, {"time": "2026-07-17", "open": 347.0, "high": 368.8, "low": 345.04, "close": 358.68}, {"time": "2026-07-20", "open": 354.72, "high": 366.31, "low": 348.36, "close": 348.66}, {"time": "2026-07-21", "open": 349.44, "high": 352.0, "low": 334.03, "close": 342.15}, {"time": "2026-07-22", "open": 342.98, "high": 344.19, "low": 328.64, "close": 335.28}])'>📊 View Interactive Chart</button>
+        <div id="chart-PANW" class="chart-container"></div>
+    </div>
+
+    <div class="section-title">🔍 Top 4 Other Candidates</div>
+    <div class="stock-grid">
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="ticker">TSM</span>
+                <span class="company-name">Taiwan Semiconductor - $421.21</span>
+            </div>
+            <p class="info-row"><strong>Summary:</strong> Fundamental demand for AI infrastructure and chips remains massive.</p>
+            
+            <div class="fundamental-box">
+                <strong>🏰 Economic Moat:</strong> Unrivaled technological manufacturing monopoly.<br>
+                <strong>💰 Financial Health:</strong> Exceptional profit margins and pristine debt ratio.
+            </div>
+
+            <div class="target-box">
+                <strong>🎯 Targets:</strong> Low: $150.00 | Avg: $190.00 | High: $220.00<br>
+                <span class="timeline-badge">2-3 Month</span> Momentum push towards $190.00
+            </div>
+            
+            <p class="info-row"><strong class="risk-text">Risk:</strong> Geopolitical headlines and sector volatility.</p>
+            
+            <div class="technical-setup">📊 Chart Setup: Consolidating near the 50-day moving average ($425.73).</div>
+            <button class="btn-chart" id="btn-TSM" onclick='showChart("chart-TSM", "btn-TSM", [{"time": "2026-06-09", "open": 430.88, "high": 438.16, "low": 405.51, "close": 427.92}, {"time": "2026-06-10", "open": 413.95, "high": 426.32, "low": 407.7, "close": 408.75}, {"time": "2026-06-11", "open": 413.25, "high": 422.25, "low": 408.86, "close": 421.07}, {"time": "2026-06-12", "open": 420.05, "high": 426.94, "low": 417.21, "close": 423.93}, {"time": "2026-06-15", "open": 438.68, "high": 442.58, "low": 431.93, "close": 441.4}, {"time": "2026-06-16", "open": 436.02, "high": 440.33, "low": 425.2, "close": 425.83}, {"time": "2026-06-17", "open": 434.75, "high": 442.5, "low": 431.64, "close": 432.15}, {"time": "2026-06-18", "open": 438.88, "high": 465.22, "low": 438.39, "close": 462.12}, {"time": "2026-06-22", "open": 476.09, "high": 476.79, "low": 465.17, "close": 467.67}, {"time": "2026-06-23", "open": 439.18, "high": 447.33, "low": 434.19, "close": 436.39}, {"time": "2026-06-24", "open": 433.98, "high": 443.86, "low": 432.57, "close": 440.83}, {"time": "2026-06-25", "open": 452.9, "high": 452.9, "low": 432.44, "close": 434.99}, {"time": "2026-06-26", "open": 425.0, "high": 436.13, "low": 419.19, "close": 432.35}, {"time": "2026-06-29", "open": 437.0, "high": 456.1, "low": 431.09, "close": 455.1}, {"time": "2026-06-30", "open": 455.61, "high": 479.0, "low": 453.0, "close": 477.57}, {"time": "2026-07-01", "open": 467.67, "high": 468.51, "low": 443.47, "close": 444.23}, {"time": "2026-07-02", "open": 450.54, "high": 461.47, "low": 429.5, "close": 434.16}, {"time": "2026-07-06", "open": 447.77, "high": 460.03, "low": 445.6, "close": 451.79}, {"time": "2026-07-07", "open": 438.02, "high": 439.8, "low": 428.11, "close": 432.57}, {"time": "2026-07-08", "open": 429.0, "high": 440.49, "low": 428.75, "close": 436.98}, {"time": "2026-07-09", "open": 446.73, "high": 447.69, "low": 436.39, "close": 436.96}, {"time": "2026-07-10", "open": 438.67, "high": 439.65, "low": 428.1, "close": 434.11}, {"time": "2026-07-13", "open": 433.82, "high": 437.99, "low": 420.29, "close": 421.58}, {"time": "2026-07-14", "open": 430.87, "high": 431.06, "low": 418.86, "close": 420.39}, {"time": "2026-07-15", "open": 425.75, "high": 428.89, "low": 410.75, "close": 419.48}, {"time": "2026-07-16", "open": 405.29, "high": 415.95, "low": 403.5, "close": 409.74}, {"time": "2026-07-17", "open": 392.12, "high": 404.7, "low": 386.02, "close": 398.37}, {"time": "2026-07-20", "open": 407.7, "high": 409.89, "low": 400.08, "close": 402.3}, {"time": "2026-07-21", "open": 418.74, "high": 425.4, "low": 413.56, "close": 424.61}, {"time": "2026-07-22", "open": 414.9, "high": 424.81, "low": 414.21, "close": 421.21}])'>📊 View Chart</button>
+            <div id="chart-TSM" class="chart-container"></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="ticker">GOOGL</span>
+                <span class="company-name">Alphabet Inc - $342.09</span>
+            </div>
+            <p class="info-row"><strong>Summary:</strong> Historically, pullbacks present low-risk accumulation areas.</p>
+            
+            <div class="fundamental-box">
+                <strong>🏰 Economic Moat:</strong> Insurmountable search engine monopoly.<br>
+                <strong>💰 Financial Health:</strong> Fortress balance sheet with immense cash reserves.
+            </div>
+
+            <div class="target-box">
+                <strong>🎯 Targets:</strong> Low: $170.00 | Avg: $200.00 | High: $220.00<br>
+                <span class="timeline-badge">2-3 Month</span> Momentum push towards $200.00
+            </div>
+            
+            <p class="info-row"><strong class="risk-text">Risk:</strong> Regulatory scrutiny and AI competition.</p>
+            
+            <div class="technical-setup">📊 Chart Setup: Consolidating near the 50-day moving average ($367.48).</div>
+            <button class="btn-chart" id="btn-GOOGL" onclick='showChart("chart-GOOGL", "btn-GOOGL", [{"time": "2026-06-09", "open": 367.09, "high": 372.08, "low": 357.3, "close": 364.26}, {"time": "2026-06-10", "open": 363.19, "high": 368.56, "low": 355.2, "close": 356.38}, {"time": "2026-06-11", "open": 355.93, "high": 358.8, "low": 346.36, "close": 357.77}, {"time": "2026-06-12", "open": 362.62, "high": 366.57, "low": 354.94, "close": 359.68}, {"time": "2026-06-15", "open": 367.93, "high": 372.99, "low": 366.55, "close": 369.35}, {"time": "2026-06-16", "open": 369.6, "high": 376.0, "low": 367.06, "close": 373.25}, {"time": "2026-06-17", "open": 369.12, "high": 372.33, "low": 362.02, "close": 363.79}, {"time": "2026-06-18", "open": 365.75, "high": 369.48, "low": 358.67, "close": 368.03}, {"time": "2026-06-22", "open": 357.94, "high": 358.92, "low": 341.72, "close": 349.68}, {"time": "2026-06-23", "open": 340.69, "high": 349.29, "low": 340.2, "close": 346.13}, {"time": "2026-06-24", "open": 349.04, "high": 353.48, "low": 341.93, "close": 345.29}, {"time": "2026-06-25", "open": 336.73, "high": 345.57, "low": 335.84, "close": 343.71}, {"time": "2026-06-26", "open": 342.55, "high": 346.36, "low": 330.2, "close": 337.39}, {"time": "2026-06-29", "open": 341.82, "high": 354.35, "low": 340.67, "close": 353.65}, {"time": "2026-06-30", "open": 353.87, "high": 358.62, "low": 350.4, "close": 357.37}, {"time": "2026-07-01", "open": 358.37, "high": 362.97, "low": 356.43, "close": 361.21}, {"time": "2026-07-02", "open": 359.48, "high": 364.2, "low": 353.42, "close": 359.91}, {"time": "2026-07-06", "open": 361.55, "high": 367.93, "low": 357.38, "close": 366.46}, {"time": "2026-07-07", "open": 369.07, "high": 373.16, "low": 365.5, "close": 367.03}, {"time": "2026-07-08", "open": 364.76, "high": 367.84, "low": 358.02, "close": 361.92}, {"time": "2026-07-09", "open": 354.31, "high": 359.65, "low": 351.08, "close": 358.89}, {"time": "2026-07-10", "open": 357.52, "high": 357.82, "low": 352.75, "close": 357.18}, {"time": "2026-07-13", "open": 356.19, "high": 358.13, "low": 351.75, "close": 352.51}, {"time": "2026-07-14", "open": 351.19, "high": 360.16, "low": 351.09, "close": 359.51}, {"time": "2026-07-15", "open": 357.97, "high": 373.65, "low": 357.76, "close": 370.92}, {"time": "2026-07-16", "open": 373.06, "high": 375.27, "low": 352.3, "close": 354.46}, {"time": "2026-07-17", "open": 346.0, "high": 348.52, "low": 341.36, "close": 346.77}, {"time": "2026-07-20", "open": 350.88, "high": 359.68, "low": 350.52, "close": 351.99}, {"time": "2026-07-21", "open": 351.32, "high": 351.32, "low": 347.0, "close": 347.15}, {"time": "2026-07-22", "open": 348.15, "high": 349.94, "low": 341.73, "close": 342.09}])'>📊 View Chart</button>
+            <div id="chart-GOOGL" class="chart-container"></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="ticker">NVDA</span>
+                <span class="company-name">NVIDIA Corp - $212.06</span>
+            </div>
+            <p class="info-row"><strong>Summary:</strong> Fundamental demand for AI infrastructure and chips remains massive.</p>
+            
+            <div class="fundamental-box">
+                <strong>🏰 Economic Moat:</strong> Absolute monopoly in AI hardware acceleration.<br>
+                <strong>💰 Financial Health:</strong> Unprecedented profit margins.
+            </div>
+
+            <div class="target-box">
+                <strong>🎯 Targets:</strong> Low: $100.00 | Avg: $140.00 | High: $160.00<br>
+                <span class="timeline-badge">2-3 Month</span> Momentum push towards $140.00
+            </div>
+            
+            <p class="info-row"><strong class="risk-text">Risk:</strong> High expectations leading to post-earnings volatility.</p>
+            
+            <div class="technical-setup">📊 Chart Setup: Momentum breakout trending above the 50-day moving average ($209.68).</div>
+            <button class="btn-chart" id="btn-NVDA" onclick='showChart("chart-NVDA", "btn-NVDA", [{"time": "2026-06-09", "open": 210.62, "high": 211.4, "low": 199.34, "close": 208.19}, {"time": "2026-06-10", "open": 204.43, "high": 207.22, "low": 199.92, "close": 200.42}, {"time": "2026-06-11", "open": 201.49, "high": 205.66, "low": 199.54, "close": 204.87}, {"time": "2026-06-12", "open": 204.86, "high": 207.07, "low": 203.44, "close": 205.19}, {"time": "2026-06-15", "open": 208.92, "high": 212.71, "low": 208.34, "close": 212.45}, {"time": "2026-06-16", "open": 211.18, "high": 211.49, "low": 207.29, "close": 207.41}, {"time": "2026-06-17", "open": 208.53, "high": 209.21, "low": 203.08, "close": 204.65}, {"time": "2026-06-18", "open": 207.33, "high": 211.39, "low": 206.5, "close": 210.69}, {"time": "2026-06-22", "open": 211.44, "high": 213.99, "low": 207.72, "close": 208.65}, {"time": "2026-06-23", "open": 202.17, "high": 203.77, "low": 200.0, "close": 200.04}, {"time": "2026-06-24", "open": 200.12, "high": 201.67, "low": 196.58, "close": 199.0}, {"time": "2026-06-25", "open": 200.08, "high": 200.8, "low": 192.13, "close": 195.74}, {"time": "2026-06-26", "open": 193.12, "high": 195.55, "low": 191.22, "close": 192.53}, {"time": "2026-06-29", "open": 193.85, "high": 196.18, "low": 189.8, "close": 194.97}, {"time": "2026-06-30", "open": 197.24, "high": 200.63, "low": 195.11, "close": 200.09}, {"time": "2026-07-01", "open": 196.2, "high": 199.85, "low": 193.45, "close": 197.58}, {"time": "2026-07-02", "open": 197.14, "high": 200.06, "low": 192.35, "close": 194.83}, {"time": "2026-07-06", "open": 194.42, "high": 197.55, "low": 193.99, "close": 195.55}, {"time": "2026-07-07", "open": 192.37, "high": 198.41, "low": 191.14, "close": 196.93}, {"time": "2026-07-08", "open": 195.18, "high": 205.16, "low": 195.06, "close": 204.12}, {"time": "2026-07-09", "open": 204.46, "high": 204.59, "low": 198.96, "close": 202.78}, {"time": "2026-07-10", "open": 202.0, "high": 211.0, "low": 201.92, "close": 210.96}, {"time": "2026-07-13", "open": 208.54, "high": 210.57, "low": 203.0, "close": 203.53}, {"time": "2026-07-14", "open": 208.2, "high": 212.55, "low": 203.8, "close": 211.8}, {"time": "2026-07-15", "open": 211.96, "high": 213.81, "low": 206.04, "close": 212.5}, {"time": "2026-07-16", "open": 210.17, "high": 211.08, "low": 205.84, "close": 207.4}, {"time": "2026-07-17", "open": 202.64, "high": 206.65, "low": 197.97, "close": 202.81}, {"time": "2026-07-20", "open": 205.87, "high": 207.74, "low": 202.28, "close": 203.28}, {"time": "2026-07-21", "open": 207.54, "high": 208.65, "low": 204.01, "close": 207.29}, {"time": "2026-07-22", "open": 205.81, "high": 214.39, "low": 204.95, "close": 212.06}])'>📊 View Chart</button>
+            <div id="chart-NVDA" class="chart-container"></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="ticker">MSFT</span>
+                <span class="company-name">Microsoft - $390.34</span>
+            </div>
+            <p class="info-row"><strong>Summary:</strong> Enterprise software and cloud computing continue to show strong growth.</p>
+            
+            <div class="fundamental-box">
+                <strong>🏰 Economic Moat:</strong> Enterprise software monopoly (Windows, Azure, Office).<br>
+                <strong>💰 Financial Health:</strong> AAA-rated balance sheet, exceptional margins.
+            </div>
+
+            <div class="target-box">
+                <strong>🎯 Targets:</strong> Low: $400.00 | Avg: $450.00 | High: $500.00<br>
+                <span class="timeline-badge">2-3 Month</span> Momentum push towards $450.00
+            </div>
+            
+            <p class="info-row"><strong class="risk-text">Risk:</strong> Heavy investments in AI taking time to show full ROI.</p>
+            
+            <div class="technical-setup">📊 Chart Setup: Consolidating near the 50-day moving average ($400.32).</div>
+            <button class="btn-chart" id="btn-MSFT" onclick='showChart("chart-MSFT", "btn-MSFT", [{"time": "2026-06-09", "open": 409.03, "high": 411.98, "low": 398.48, "close": 403.41}, {"time": "2026-06-10", "open": 398.55, "high": 405.04, "low": 397.16, "close": 397.36}, {"time": "2026-06-11", "open": 395.2, "high": 396.85, "low": 384.0, "close": 390.34}, {"time": "2026-06-12", "open": 391.43, "high": 391.74, "low": 382.27, "close": 390.74}, {"time": "2026-06-15", "open": 396.8, "high": 401.75, "low": 392.85, "close": 399.76}, {"time": "2026-06-16", "open": 395.79, "high": 396.84, "low": 390.69, "close": 393.83}, {"time": "2026-06-17", "open": 390.25, "high": 390.37, "low": 377.32, "close": 378.91}, {"time": "2026-06-18", "open": 377.82, "high": 381.37, "low": 373.28, "close": 379.4}, {"time": "2026-06-22", "open": 375.74, "high": 381.63, "low": 367.07, "close": 367.34}, {"time": "2026-06-23", "open": 372.38, "high": 377.22, "low": 370.67, "close": 373.94}, {"time": "2026-06-24", "open": 371.57, "high": 378.88, "low": 364.78, "close": 365.46}, {"time": "2026-06-25", "open": 362.77, "high": 364.23, "low": 349.2, "close": 352.83}, {"time": "2026-06-26", "open": 357.15, "high": 376.61, "low": 355.43, "close": 372.97}, {"time": "2026-06-29", "open": 377.5, "high": 380.5, "low": 359.9, "close": 368.57}, {"time": "2026-06-30", "open": 371.03, "high": 374.15, "low": 367.45, "close": 373.02}, {"time": "2026-07-01", "open": 380.82, "high": 388.83, "low": 374.89, "close": 384.28}, {"time": "2026-07-02", "open": 384.48, "high": 392.2, "low": 383.7, "close": 390.49}, {"time": "2026-07-06", "open": 387.04, "high": 389.15, "low": 381.22, "close": 386.74}, {"time": "2026-07-07", "open": 392.49, "high": 395.57, "low": 388.22, "close": 388.84}, {"time": "2026-07-08", "open": 384.03, "high": 385.31, "low": 381.33, "close": 383.34}, {"time": "2026-07-09", "open": 374.45, "high": 384.65, "low": 373.35, "close": 384.36}, {"time": "2026-07-10", "open": 387.8, "high": 391.91, "low": 381.5, "close": 385.1}, {"time": "2026-07-13", "open": 387.75, "high": 393.65, "low": 384.15, "close": 390.99}, {"time": "2026-07-14", "open": 382.82, "high": 388.19, "low": 378.65, "close": 384.93}, {"time": "2026-07-15", "open": 387.8, "high": 398.96, "low": 386.4, "close": 395.63}, {"time": "2026-07-16", "open": 398.31, "high": 405.99, "low": 392.05, "close": 401.1}, {"time": "2026-07-17", "open": 394.86, "high": 398.39, "low": 389.39, "close": 393.82}, {"time": "2026-07-20", "open": 391.41, "high": 403.18, "low": 389.65, "close": 402.29}, {"time": "2026-07-21", "open": 398.81, "high": 401.47, "low": 396.32, "close": 397.75}, {"time": "2026-07-22", "open": 399.58, "high": 401.0, "low": 386.96, "close": 390.34}])'>📊 View Chart</button>
+            <div id="chart-MSFT" class="chart-container"></div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function showChart(containerId, buttonId, chartData) {
+        const chartContainer = document.getElementById(containerId);
+        chartContainer.style.display = 'block';
+        document.getElementById(buttonId).style.display = 'none';
+        chartContainer.innerHTML = '';
+
+        const chart = LightweightCharts.createChart(chartContainer, {
+            layout: { textColor: '#d1d4dc', backgroundColor: '#131722' },
+            grid: { vertLines: { color: 'rgba(42, 46, 57, 0)' }, horzLines: { color: 'rgba(42, 46, 57, 0.6)' } },
+            timeScale: { timeVisible: false, borderColor: '#485c7b' }
+        });
+
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
+            wickUpColor: '#26a69a', wickDownColor: '#ef5350'
+        });
+        
+        candleSeries.setData(chartData);
+        chart.timeScale().fitContent();
+
+        window.addEventListener('resize', () => {
+            chart.resize(chartContainer.clientWidth, chartContainer.clientHeight);
+        });
+    }
+</script>
+
+</body>
+</html>
