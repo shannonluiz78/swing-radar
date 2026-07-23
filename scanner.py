@@ -101,8 +101,8 @@ def scan_market():
             current_price = hist['Close'].iloc[-1]
             ma_50 = hist['Close'].tail(50).mean()
             
-            # Technical breakout condition: Price above 50-day moving average
-            if current_price > ma_50:
+            # Temporary override for testing layout
+            if True:
                 stock_info = stock.info
                 target_low = stock_info.get('targetLowPrice', 'N/A')
                 target_mean = stock_info.get('targetMeanPrice', 'N/A')
