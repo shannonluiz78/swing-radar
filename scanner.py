@@ -125,9 +125,12 @@ def generate_html(stocks):
     highlight = stocks[0]
     others = stocks[1:]
     
+    # Bundle all chart data into a clean dictionary
+    all_charts = {s['symbol']: s['chart_data'] for s in stocks}
+    all_charts_json = json.dumps(all_charts)
+    
     others_html = ""
     for s in others:
-        json_chart_data = json.dumps(s['chart_data'])
         others_html += f"""
         <div class="stock-card">
             <div class="stock-header">
@@ -149,13 +152,11 @@ def generate_html(stocks):
             <p class="info-row"><strong class="risk-text">Risk:</strong> {s['risk']}</p>
             
             <div class="technical-setup">{s['technical_setup']}</div>
-            <button class="btn-chart" id="btn-{s['symbol']}" onclick='showChart("chart-{s['symbol']}", "btn-{s['symbol']}", {json_chart_data})'>📊 View Chart</button>
+            <button class="btn-chart" id="btn-{s['symbol']}" onclick='showChart("{s['symbol']}")'>📊 View Chart</button>
             <div id="chart-{s['symbol']}" class="chart-container"></div>
         </div>
         """
 
-    highlight_chart_json = json.dumps(highlight['chart_data'])
-    
     html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -223,7 +224,7 @@ def generate_html(stocks):
         
         <div class="technical-setup">HIGHLIGHT_TECHNICAL_PLACEHOLDER</div>
         
-        <button class="btn-chart" id="btn-HIGHLIGHT_SYMBOL_PLACEHOLDER" onclick='showChart("chart-HIGHLIGHT_SYMBOL_PLACEHOLDER", "btn-HIGHLIGHT_SYMBOL_PLACEHOLDER", HIGHLIGHT_CHART_JSON_PLACEHOLDER)'>📊 View Interactive Chart</button>
+        <button class="btn-chart" id="btn-HIGHLIGHT_SYMBOL_PLACEHOLDER" onclick='showChart("HIGHLIGHT_SYMBOL_PLACEHOLDER")'>📊 View Interactive Chart</button>
         <div id="chart-HIGHLIGHT_SYMBOL_PLACEHOLDER" class="chart-container"></div>
     </div>
 
@@ -234,8 +235,13 @@ def generate_html(stocks):
 </div>
 
 <script>
-    function showChart(containerId, buttonId, chartData) {
+    const chartDatabase = ALL_CHARTS_JSON_PLACEHOLDER;
+
+    function showChart(symbol) {
+        const containerId = 'chart-' + symbol;
+        const buttonId = 'btn-' + symbol;
         const chartContainer = document.getElementById(containerId);
+        
         chartContainer.style.display = 'block';
         document.getElementById(buttonId).style.display = 'none';
         chartContainer.innerHTML = '';
@@ -253,7 +259,7 @@ def generate_html(stocks):
             wickUpColor: '#26a69a', wickDownColor: '#ef5350'
         });
         
-        candleSeries.setData(chartData);
+        candleSeries.setData(chartDatabase[symbol]);
         chart.timeScale().fitContent();
 
         setTimeout(() => {
@@ -283,9 +289,9 @@ def generate_html(stocks):
     html_content = html_content.replace("HIGHLIGHT_TARGET_HIGH_PLACEHOLDER", highlight['target_high'])
     html_content = html_content.replace("HIGHLIGHT_RISK_PLACEHOLDER", highlight['risk'])
     html_content = html_content.replace("HIGHLIGHT_TECHNICAL_PLACEHOLDER", highlight['technical_setup'])
-    html_content = html_content.replace("HIGHLIGHT_CHART_JSON_PLACEHOLDER", highlight_chart_json)
     html_content = html_content.replace("OTHER_COUNT_PLACEHOLDER", str(len(others)))
     html_content = html_content.replace("OTHERS_HTML_PLACEHOLDER", others_html)
+    html_content = html_content.replace("ALL_CHARTS_JSON_PLACEHOLDER", all_charts_json)
 
     with open("index.html", "w", encoding="utf-8") as html_f:
         html_f.write(html_content)
