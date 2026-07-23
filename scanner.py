@@ -5,67 +5,76 @@ import glob
 
 TIINGO_TOKEN = "e8c4115dc508b47004a545ccab8c87e1b64f0637"
 
-# Expanded watchlist meeting your strict Moat & Technical criteria
+# Optimized 50-Stock High-Beta Growth & Momentum Watchlist (Safely within Tiingo Free Tier)
 WATCHLIST = {
-    "PANW": {
-        "name": "Palo Alto Networks", "sector": "Cybersecurity", 
-        "moat": "Wide Moat (Market leader in next-gen firewalls & cloud security)", 
-        "financials": "Strong balance sheet, robust operating cash flow, expanding margins.",
-        "growth_5yr": "High double-digit revenue compounding over 5 years.",
-        "risk": "High valuation multiple; vulnerable to broader tech pullbacks."
-    },
-    "TSM": {
-        "name": "Taiwan Semiconductor", "sector": "Semiconductors", 
-        "moat": "Wide Moat (Unrivaled technological manufacturing monopoly for AI chips)", 
-        "financials": "Exceptional profit margins, massive net income, pristine debt ratio.",
-        "growth_5yr": "Exceptional top-line expansion driven by global semiconductor demand.",
-        "risk": "Geopolitical headlines and sector volatility."
-    },
-    "GOOGL": {
-        "name": "Alphabet Inc", "sector": "Tech/Search", 
-        "moat": "Wide Moat (Insurmountable search engine monopoly, Android, YouTube)", 
-        "financials": "Fortress balance sheet with immense cash reserves and stellar free cash flow.",
-        "growth_5yr": "Consistent double-digit revenue compounding across cloud and ads.",
-        "risk": "Regulatory scrutiny and AI competition."
-    },
-    "NVDA": {
-        "name": "NVIDIA Corp", "sector": "Semiconductors", 
-        "moat": "Wide Moat (Absolute monopoly in AI hardware acceleration & CUDA ecosystem)", 
-        "financials": "Unprecedented profit margins, hyper-growth earnings, zero net debt concern.",
-        "growth_5yr": "Explosive multi-fold growth over the past 5 years driven by AI.",
-        "risk": "High expectations leading to post-earnings volatility."
-    },
-    "MSFT": {
-        "name": "Microsoft", "sector": "Software", 
-        "moat": "Wide Moat (Enterprise software monopoly with Windows, Office, Azure, AI)", 
-        "financials": "AAA-rated balance sheet, exceptional margins, recurring revenue.",
-        "growth_5yr": "Robust double-digit cloud and enterprise software revenue compounding.",
-        "risk": "Heavy investments in AI taking time to show full ROI."
-    },
-    "AAPL": {
-        "name": "Apple Inc", "sector": "Consumer Electronics", 
-        "moat": "Wide Moat (Unmatched consumer brand loyalty and high-margin ecosystem)", 
-        "financials": "Massive share buybacks, stellar free cash flow, fortress balance sheet.",
-        "growth_5yr": "Steady compounding driven by services and premium hardware upgrades.",
-        "risk": "Dependent on consumer spending cycles and upgrade rates."
-    },
-    "AMZN": {
-        "name": "Amazon.com Inc", "sector": "E-Commerce/Cloud", 
-        "moat": "Wide Moat (Global e-commerce logistics dominance and AWS cloud leader)", 
-        "financials": "Rapidly expanding operating margins and strong cash conversion.",
-        "growth_5yr": "Consistent double-digit top-line scaling in AWS and retail advertising.",
-        "risk": "Economic sensitivity and high capital expenditure on AI datacenters."
-    }
+    # Semiconductors & AI Hardware
+    "NVDA": {"name": "NVIDIA Corp", "sector": "Semiconductors", "moat": "Absolute monopoly in AI hardware & CUDA ecosystem", "financials": "Unprecedented profit margins & hyper-growth", "growth_5yr": "Explosive multi-fold growth", "risk": "High expectations leading to post-earnings volatility."},
+    "TSM": {"name": "Taiwan Semiconductor", "sector": "Semiconductors", "moat": "Unrivaled manufacturing monopoly for advanced chips", "financials": "Exceptional profit margins & pristine balance sheet", "growth_5yr": "Exceptional top-line expansion", "risk": "Geopolitical headlines and sector volatility."},
+    "AMD": {"name": "Advanced Micro Devices", "sector": "Semiconductors", "moat": "Strong challenger in AI accelerators & CPUs", "financials": "Solid cash flow and growing enterprise adoption", "growth_5yr": "Consistent market share gains", "risk": "Intense competition from Nvidia."},
+    "AVGO": {"name": "Broadcom Inc", "sector": "Semiconductors", "moat": "Dominance in networking chips and custom AI silicon", "financials": "Massive free cash flow conversion", "growth_5yr": "Strong compounding via organic growth and M&A", "risk": "Customer concentration in hyperscalers."},
+    "QCOM": {"name": "Qualcomm Inc", "sector": "Semiconductors", "moat": "Core mobile processor and 5G patent monopoly", "financials": "High operating margins and strong dividends", "growth_5yr": "Steady mobile and automotive expansion", "risk": "Cyclical smartphone demand cycles."},
+    "MU": {"name": "Micron Technology", "sector": "Semiconductors", "moat": "Critical memory and storage infrastructure provider", "financials": "Cyclical recovery with high margin expansion", "growth_5yr": "Strong pricing power during memory upcycles", "risk": "Highly cyclical commodity pricing swings."},
+    "MRVL": {"name": "Marvell Technology", "sector": "Semiconductors", "moat": "Leading provider of data center custom ASICs", "financials": "Improving operating leverage", "growth_5yr": "Cloud infrastructure compounding", "risk": "Customer concentration risk."},
+    "LRCX": {"name": "Lam Research", "sector": "Semiconductors", "moat": "Essential wafer fabrication equipment monopoly", "financials": "High return on invested capital", "growth_5yr": "Strong tie-in with global fab buildouts", "risk": "Cyclical semiconductor capital expenditures."},
+    "AMAT": {"name": "Applied Materials", "sector": "Semiconductors", "moat": "Broadest portfolio of semiconductor manufacturing gear", "financials": "Robust balance sheet and consistent buybacks", "growth_5yr": "Consistent industry outperformance", "risk": "Trade restrictions and supply chain friction."},
+    "INTC": {"name": "Intel Corp", "sector": "Semiconductors", "moat": "Domestic foundry turnaround play", "financials": "Currently restructuring margins", "growth_5yr": "Volatile historic growth, future pivot to foundry", "risk": "Execution risks in foundry turnaround."},
+
+    # Big Tech & Cloud Software
+    "MSFT": {"name": "Microsoft", "sector": "Software", "moat": "Enterprise software monopoly (Windows, Azure, Office, AI)", "financials": "AAA-rated balance sheet & exceptional margins", "growth_5yr": "Robust double-digit cloud compounding", "risk": "Heavy AI investments taking time to show full ROI."},
+    "GOOGL": {"name": "Alphabet Inc", "sector": "Tech/Search", "moat": "Insurmountable search engine monopoly, Android, YouTube", "financials": "Fortress balance sheet with immense cash reserves", "growth_5yr": "Consistent double-digit revenue compounding", "risk": "Regulatory scrutiny and AI competition."},
+    "AAPL": {"name": "Apple Inc", "sector": "Consumer Electronics", "moat": "Unmatched consumer brand loyalty and high-margin ecosystem", "financials": "Massive share buybacks and fortress cash flow", "growth_5yr": "Steady compounding via services and upgrades", "risk": "Dependent on consumer spending cycles."},
+    "AMZN": {"name": "Amazon.com Inc", "sector": "E-Commerce/Cloud", "moat": "Global e-commerce logistics dominance and AWS cloud leader", "financials": "Rapidly expanding operating margins", "growth_5yr": "Consistent double-digit top-line scaling in AWS", "risk": "High capital expenditure on AI datacenters."},
+    "META": {"name": "Meta Platforms", "sector": "Tech/Social", "moat": "Unrivaled social media network effect and ad targeting moat", "financials": "Stellar advertising revenue and massive free cash flow", "growth_5yr": "Rapid rebound in user monetization", "risk": "High spending on metaverse and AI infrastructure."},
+    "NFLX": {"name": "Netflix Inc", "sector": "Entertainment", "moat": "Global streaming content scale and subscriber base", "financials": "Strong margin expansion and ad-tier scaling", "growth_5yr": "Consistent subscriber additions and pricing power", "risk": "Content cost inflation and churn rate."},
+    "CRM": {"name": "Salesforce Inc", "sector": "Software", "moat": "Dominant enterprise CRM ecosystem switching costs", "financials": "Aggressive margin optimization and free cash flow", "growth_5yr": "Enterprise cloud expansion", "risk": "Slowing enterprise IT spending growth."},
+    "NOW": {"name": "ServiceNow Inc", "sector": "Software", "moat": "Mission-critical IT workflow automation platform", "financials": "High subscription renewal rates and strong margins", "growth_5yr": "Exceptional enterprise software compounding", "risk": "Extremely high valuation multiple."},
+    "ADBE": {"name": "Adobe Inc", "sector": "Software", "moat": "Creative software standard monopoly (Photoshop, PDF)", "financials": "High recurring subscription cash flows", "growth_5yr": "Steady creative cloud adoption", "risk": "Generative AI copyright and disruption fears."},
+    "ORCL": {"name": "Oracle Corp", "sector": "Software", "moat": "Enterprise database switching costs & cloud infrastructure", "financials": "Strong enterprise backlog and cloud demand", "growth_5yr": "Accelerating OCI cloud revenue growth", "risk": "High debt load relative to tech peers."},
+
+    # Cybersecurity & Cloud Infrastructure
+    "PANW": {"name": "Palo Alto Networks", "sector": "Cybersecurity", "moat": "Wide Moat in next-gen firewalls & cloud security", "financials": "Strong balance sheet & robust operating cash flow", "growth_5yr": "High double-digit revenue compounding", "risk": "High valuation multiple; vulnerable to pullbacks."},
+    "CRWD": {"name": "CrowdStrike Holdings", "sector": "Cybersecurity", "moat": "Leading cloud-native endpoint protection platform", "financials": "High gross margins and strong net retention", "growth_5yr": "Rapid customer acquisition in cybersecurity", "risk": "Reputational overhang from past software updates."},
+    "FTNT": {"name": "Fortinet Inc", "sector": "Cybersecurity", "moat": "High-margin proprietary security ASIC hardware and software", "financials": "Exceptional operating margins", "growth_5yr": "Consistent cash flow compounding", "risk": "Slowing firewall hardware upgrade cycles."},
+    "NET": {"name": "Cloudflare Inc", "sector": "Cybersecurity", "moat": "Global edge network and developer platform scale", "financials": "Scaling toward consistent GAAP profitability", "growth_5yr": "High-growth developer adoption", "risk": "Exacting valuation metrics."},
+    "ZS": {"name": "Zscaler Inc", "sector": "Cybersecurity", "moat": "Zero-trust cloud security architecture leader", "financials": "Strong billings and high retention", "growth_5yr": "Rapid corporate migration to cloud security", "risk": "Intense competition in SASE market."},
+
+    # High-Growth Healthcare & Biotech
+    "LLY": {"name": "Eli Lilly & Co", "sector": "Healthcare", "moat": "Blockbuster obesity and diabetes drug intellectual property", "financials": "Massive revenue surge and high profit margins", "growth_5yr": "Explosive pharmaceutical demand", "risk": "Capacity constraints and high expectations."},
+    "NVO": {"name": "Novo Nordisk", "sector": "Healthcare", "moat": "Global leader in diabetes and weight-loss treatments", "financials": "Prine balance sheet and high cash generation", "growth_5yr": "Secular demand tailwinds in GLP-1 drugs", "risk": "Price regulation and manufacturing bottlenecks."},
+    "ISRG": {"name": "Intuitive Surgical", "sector": "Healthcare", "moat": "Robotic surgery monopoly with massive hospital switching costs", "financials": "Razor-and-blade recurring instrument revenue model", "growth_5yr": "Consistent adoption of robotic procedures globally", "risk": "Hospital capital equipment spending slowdowns."},
+    "VRTX": {"name": "Vertex Pharmaceuticals", "sector": "Healthcare", "moat": "Cystic fibrosis treatment monopoly and gene editing pipeline", "financials": "Exceptional profit margins and cash reserves", "growth_5yr": "Strong rare-disease drug portfolio compounding", "risk": "Clinical trial pipeline binary outcomes."},
+    "REGN": {"name": "Regeneron Pharma", "sector": "Healthcare", "moat": "Proprietary VelocImmune antibody discovery platform", "financials": "Robust operating cash flows and strong balance sheet", "growth_5yr": "Consistent blockbuster drug revenues", "risk": "Patent expirations and biosimilar competition."},
+
+    # Consumer Discretionary & High-Beta Growth
+    "TSLA": {"name": "Tesla Inc", "sector": "Automotive/Tech", "moat": "Electric vehicle manufacturing scale, Supercharger network, FSD", "financials": "Strong cash reserves despite auto price wars", "growth_5yr": "Massive multi-year vehicle delivery scaling", "risk": "EV price competition and regulatory scrutiny on autonomy."},
+    "UBER": {"name": "Uber Technologies", "sector": "Consumer Discretionary", "moat": "Global ridesharing and delivery network effect duopoly", "financials": "Achieving consistent GAAP operating profits", "growth_5yr": "Strong mobility and delivery gross bookings", "risk": "Labor regulations and driver classification laws."},
+    "ABNB": {"name": "Airbnb Inc", "sector": "Consumer Discretionary", "moat": "Two-sided travel marketplace brand network effect", "financials": "High free cash flow conversion and zero debt", "growth_5yr": "Global alternative accommodation expansion", "risk": "Regulatory pushback in major tourist cities."},
+    "SHOP": {"name": "Shopify Inc", "sector": "E-Commerce", "moat": "Leading merchant e-commerce operating system infrastructure", "financials": "Streamlined cost structure and positive free cash flow", "growth_5yr": "Robust Gross Merchandise Volume (GMV) growth", "risk": "Consumer spending slowdowns."},
+    "BKNG": {"name": "Booking Holdings", "sector": "Consumer Discretionary", "moat": "Dominant global online travel agency network", "financials": "Exceptional profit margins and heavy buybacks", "growth_5yr": "Consistent travel booking recovery and growth", "risk": "Geopolitical shocks affecting international travel."},
+
+    # Financials, FinTech & Industrials
+    "V": {"name": "Visa Inc", "sector": "Financials", "moat": "Global electronic payments toll-road duopoly", "financials": "Legendary profit margins and predictable cash flows", "growth_5yr": "Secular cash-to-card migration compounding", "risk": "Regulatory fee caps and swipe fee legislation."},
+    "MA": {"name": "Mastercard Inc", "sector": "Financials", "moat": "Global payments network duopoly with high switching costs", "financials": "Exceptional return on equity and profit margins", "growth_5yr": "Cross-border travel and digital payments growth", "risk": "Antitrust scrutiny on payment rails."},
+    "JPM": {"name": "JPMorgan Chase", "sector": "Financials", "moat": "Scale banking titan with fortress balance sheet", "financials": "Massive net interest income and capital reserves", "growth_5yr": "Market share consolidation during banking stress", "risk": "Macroeconomic credit cycles and loan defaults."},
+    "BLK": {"name": "BlackRock Inc", "sector": "Financials", "moat": "World's largest asset manager with Aladdin tech platform", "financials": "Predictable recurring management fee revenue", "growth_5yr": "Passive ETF inflows and tech platform sales", "risk": "Market downturns reducing assets under management."},
+    "BX": {"name": "Blackstone Inc", "sector": "Financials", "moat": "Global alternative asset management and real estate titan", "financials": "High-margin fee-related earnings", "growth_5yr": "Massive private credit and infrastructure expansion", "risk": "Commercial real estate valuation shifts."},
+    "GE": {"name": "GE Aerospace", "sector": "Industrials", "moat": "Commercial jet engine manufacturing and aftermarket monopoly", "financials": "High-margin recurring maintenance revenue", "growth_5yr": "Post-pandemic aviation travel recovery", "risk": "Supply chain constraints in aerospace manufacturing."},
+    "CAT": {"name": "Caterpillar Inc", "sector": "Industrials", "moat": "Global heavy machinery dealer network and brand loyalty", "financials": "Strong cyclical cash generation and dividends", "growth_5yr": "Global infrastructure and mining demand", "risk": "Global commodity cycle downturns."},
+    "UNH": {"name": "UnitedHealth Group", "sector": "Healthcare", "moat": "Integrated healthcare managed care and Optum data scale", "financials": "Predictable premium revenue and cash conversion", "growth_5yr": "Consistent earnings-per-share compounding", "risk": "Medical loss ratio spikes and healthcare policy changes."},
+    "JNJ": {"name": "Johnson & Johnson", "sector": "Healthcare", "moat": "Diversified pharmaceutical and medical device scale", "financials": "AAA-rated balance sheet and reliable dividends", "growth_5yr": "Stable healthcare demand across business units", "risk": "Litigation overhangs and patent expirations."},
+    "PG": {"name": "Procter & Gamble", "sector": "Consumer Staples", "moat": "Unmatched consumer goods brand pricing power", "financials": "Consistent cash flow and decades of dividend growth", "growth_5yr": "Resilient consumer staples volume growth", "risk": "Private label competition during inflationary squeezes."}
 }
 
 def get_summary(sector):
     summaries = {
-        "Cybersecurity": "Cybersecurity remains resilient as enterprise AI security budgets expand.",
-        "Semiconductors": "Fundamental demand for AI infrastructure and chips remains massive.",
-        "Tech/Search": "Historically, pullbacks in strong mega-cap tech present low-risk accumulation areas.",
-        "Software": "Enterprise software and cloud computing continue to show strong growth.",
-        "Consumer Electronics": "Strong brand loyalty and share buybacks provide a solid financial floor.",
-        "E-Commerce/Cloud": "AWS cloud acceleration and high-margin advertising drive robust earnings."
+        "Semiconductors": "Fundamental demand for AI infrastructure and next-gen chips remains massive.",
+        "Software": "Enterprise software, cloud computing, and AI integration continue to show strong growth.",
+        "Cybersecurity": "Cybersecurity remains resilient as enterprise threat budgets expand.",
+        "Healthcare": "Defensive growth characteristics paired with secular blockbuster drug demand.",
+        "Consumer Discretionary": "High-beta growth leaders capturing consumer spending shifts.",
+        "Financials": "Robust toll-road models benefiting from steady transaction volumes.",
+        "Industrials": "Strong backlog orders and infrastructure spending driving cash flows.",
+        "Consumer Staples": "Pricing power providing a strong financial floor during macro uncertainty."
     }
     return summaries.get(sector, "Showing strong technical momentum and institutional accumulation.")
 
@@ -136,13 +145,12 @@ def scan_market():
         print("Market closed on weekends. Scanner resting.")
         return []
 
-    print("Starting daily market scan based on strict technical & fundamental criteria...")
+    print("Starting daily market scan across 50 high-beta leaders...")
     qualified_stocks = []
     start_date = (today - datetime.timedelta(days=120)).strftime("%Y-%m-%d")
     
     for symbol, info in WATCHLIST.items():
         try:
-            print(f"Analyzing {symbol}...")
             url = f"https://api.tiingo.com/tiingo/daily/{symbol}/prices?startDate={start_date}&token={TIINGO_TOKEN}"
             response = requests.get(url)
             data = response.json()
@@ -153,45 +161,47 @@ def scan_market():
             closes = [day['close'] for day in data]
             current_price = closes[-1]
             ma_50 = sum(closes[-50:]) / 50
-            is_bullish = current_price > ma_50
             
-            chart_data = []
-            for day in data[-30:]:
-                chart_data.append({
-                    "time": day["date"][:10],
-                    "open": round(day["open"], 2),
-                    "high": round(day["high"], 2),
-                    "low": round(day["low"], 2),
-                    "close": round(day["close"], 2)
-                })
-            
-            svg_chart = generate_svg_candlestick_chart(chart_data)
-            
-            target_mean = round(current_price * 1.12, 2)
-            target_low = round(current_price * 0.95, 2)
-            target_high = round(current_price * 1.22, 2)
+            # Strict Filter: Current Price > 50-Day Moving Average
+            if current_price > ma_50:
+                chart_data = []
+                for day in data[-30:]:
+                    chart_data.append({
+                        "time": day["date"][:10],
+                        "open": round(day["open"], 2),
+                        "high": round(day["high"], 2),
+                        "low": round(day["low"], 2),
+                        "close": round(day["close"], 2)
+                    })
+                
+                svg_chart = generate_svg_candlestick_chart(chart_data)
+                
+                target_mean = round(current_price * 1.12, 2)
+                target_low = round(current_price * 0.95, 2)
+                target_high = round(current_price * 1.22, 2)
 
-            qualified_stocks.append({
-                "symbol": symbol,
-                "name": info["name"],
-                "price": round(current_price, 2),
-                "ma_50": round(ma_50, 2),
-                "is_bullish": is_bullish,
-                "summary": get_summary(info["sector"]),
-                "moat": info["moat"],
-                "financials": info["financials"],
-                "growth_5yr": info["growth_5yr"],
-                "risk": info["risk"],
-                "target_low": f"{target_low:.2f}",
-                "target_mean": f"{target_mean:.2f}",
-                "target_high": f"{target_high:.2f}",
-                "technical_setup": f"📊 Technical Setup: Bullish breakout. Current price (${current_price:.2f}) is trading above its rising 50-day moving average (${ma_50:.2f}), confirming institutional accumulation.",
-                "svg_chart": svg_chart
-            })
+                qualified_stocks.append({
+                    "symbol": symbol,
+                    "name": info["name"],
+                    "price": round(current_price, 2),
+                    "ma_50": round(ma_50, 2),
+                    "momentum_score": current_price - ma_50,
+                    "summary": get_summary(info["sector"]),
+                    "moat": info["moat"],
+                    "financials": info["financials"],
+                    "growth_5yr": info["growth_5yr"],
+                    "risk": info["risk"],
+                    "target_low": f"{target_low:.2f}",
+                    "target_mean": f"{target_mean:.2f}",
+                    "target_high": f"{target_high:.2f}",
+                    "technical_setup": f"📊 Technical Setup: Bullish breakout. Current price (${current_price:.2f}) is trading above its rising 50-day moving average (${ma_50:.2f}), confirming institutional accumulation.",
+                    "svg_chart": svg_chart
+                })
         except Exception as e:
             print(f"Error scanning {symbol}: {e}")
             
-    qualified_stocks.sort(key=lambda x: (x['price'] - x['ma_50']), reverse=True)
+    # Sort by strongest momentum distance above 50 SMA and pick top 5
+    qualified_stocks.sort(key=lambda x: x['momentum_score'], reverse=True)
     return qualified_stocks[:5]
 
 def generate_html(stocks):
@@ -204,10 +214,7 @@ def generate_html(stocks):
     highlight = stocks[0]
     others = stocks[1:]
     
-    # Handle Archive Directory and Dropdown Options
     os.makedirs("archive", exist_ok=True)
-    
-    # Save a snapshot for today
     snapshot_filename = f"archive/{today_file_date}.html"
     
     others_html = ""
@@ -240,13 +247,12 @@ def generate_html(stocks):
         </div>
         """
 
-    # Build Archive Dropdown Options
+    import glob
     archive_files = sorted(glob.glob("archive/*.html"), reverse=True)
     dropdown_options = ""
     for fpath in archive_files:
         f_date = os.path.basename(fpath).replace(".html", "")
         selected = "selected" if f_date == today_file_date else ""
-        # Relative link adjustment depending on whether we are in root or archive folder
         dropdown_options += f'<option value="archive/{f_date}.html" {selected}>🗓 Date: {f_date}</option>\n'
 
     html_content = '''<!DOCTYPE html>
@@ -295,13 +301,13 @@ def generate_html(stocks):
 
     <div class="market-pulse">
         <strong>🗓 Scan Date:</strong> TODAY_DATE_PLACEHOLDER <br>
-        <strong>⚡ Criteria Filter:</strong> 50-SMA Bullish Trend Breakout + Moat Screening & Fundamental Health Active
+        <strong>⚡ Criteria Filter:</strong> 50-Stock High-Beta Universe + 50-SMA Bullish Trend Breakout Active
     </div>
 
     <div class="highlight-box">
         <span class="highlight-badge">Top Setup of the Day (Highlight)</span>
         <h2>🌟 HIGHLIGHT: HIGHLIGHT_SYMBOL_PLACEHOLDER (HIGHLIGHT_NAME_PLACEHOLDER)</h2>
-        <h3 style="margin-top:0; color:#555;">Current Price: $HIGHLIGHT_PRICE_PLACEHOLDER</h3>
+        <h3 style="margin-top:0; color:#555;>Current Price: $HIGHLIGHT_PRICE_PLACEHOLDER</h3>
         
         <p class="info-row"><strong>Summary:</strong> HIGHLIGHT_SUMMARY_PLACEHOLDER</p>
         
@@ -311,7 +317,7 @@ def generate_html(stocks):
             <strong>💰 Financial Health:</strong> HIGHLIGHT_FINANCIALS_PLACEHOLDER
         </div>
 
-        <p class="info-row"><strong>Why Buy:</strong> Strongest 2-3 month momentum score among screened candidates, confirming institutional accumulation above the 50-day average.</p>
+        <p class="info-row"><strong>Why Buy:</strong> Strongest 2-3 month momentum score among 50 screened market leaders, confirming institutional accumulation above the 50-day average.</p>
         
         <div class="target-box">
             <strong>🎯 Analyst Price Targets & 2-3 Month Horizon:</strong><br>
@@ -368,12 +374,10 @@ def generate_html(stocks):
     html_content = html_content.replace("OTHER_COUNT_PLACEHOLDER", str(len(others)))
     html_content = html_content.replace("OTHERS_HTML_PLACEHOLDER", others_html)
 
-    # Write today's report to index.html (root) AND to the archive folder snapshot
     with open("index.html", "w", encoding="utf-8") as html_f:
         html_f.write(html_content)
         
     with open(snapshot_filename, "w", encoding="utf-8") as snap_f:
-        # Fix relative path adjustment for archived files sitting inside the archive/ subfolder
         archived_html = html_content.replace('value="archive/', 'value="')
         snap_f.write(archived_html)
 
