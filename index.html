@@ -36,7 +36,7 @@
 <div class="dashboard-container">
     <h1>📈 Swing-Trade Radar</h1>
     <div class="market-pulse">
-        <strong>🗓 Latest Scan:</strong> Thursday, July 23, 2026 <br>
+        <strong>🗓 Latest Date:</strong> Thursday, July 23, 2026 <br>
         <strong>⚡ Market Pulse:</strong> Live Tiingo Data Feed | Technical Breakout & Moat Analysis Completed
     </div>
 
@@ -179,6 +179,8 @@
         chartContainer.innerHTML = '';
 
         const chart = LightweightCharts.createChart(chartContainer, {
+            width: chartContainer.clientWidth || 600,
+            height: 300,
             layout: { textColor: '#d1d4dc', backgroundColor: '#131722' },
             grid: { vertLines: { color: 'rgba(42, 46, 57, 0)' }, horzLines: { color: 'rgba(42, 46, 57, 0.6)' } },
             timeScale: { timeVisible: false, borderColor: '#485c7b' }
@@ -192,8 +194,12 @@
         candleSeries.setData(chartData);
         chart.timeScale().fitContent();
 
+        setTimeout(() => {
+            chart.resize(chartContainer.clientWidth, 300);
+        }, 50);
+
         window.addEventListener('resize', () => {
-            chart.resize(chartContainer.clientWidth, chartContainer.clientHeight);
+            chart.resize(chartContainer.clientWidth, 300);
         });
     }
 </script>
