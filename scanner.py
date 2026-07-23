@@ -56,17 +56,68 @@ def get_summary(sector):
     }
     return summaries.get(sector, "Showing strong institutional accumulation.")
 
+def generate_svg_chart(chart_data):
+    """Generates a responsive, professional SVG price chart from daily close data."""
+    if not chart_data or len(chart_data) < 2:
+        return "<svg width='100%' height='200'><text x='20' y='100' fill='#666'>No chart data available</text></svg>"
+    
+    prices = [item['close'] for item in chart_data]
+    min_p = min(prices)
+    max_p = max(prices)
+    p_range = max_p - min_p if max_p != min_p else 1.0
+    
+    width = 600
+    height = 200
+    padding = 30
+    
+    usable_w = width - (padding * 2)
+    usable_h = height - (padding * 2)
+    
+    points = []
+    for i, p in enumerate(prices):
+        x = padding + (i / (len(prices) - 1)) * usable_w
+        y = height - padding - ((p - min_p) / p_range) * usable_h
+        points.append(f"{x},{y}")
+        
+    poly_points = " ".join(points)
+    first_x = padding
+    last_x = width - padding
+    bottom_y = height - padding
+    
+    area_points = f"{first_x},{bottom_y} {poly_points} {last_x},{bottom_y}"
+    
+    # Determine color (Green if net positive over period, else Red)
+    is_bullish = prices[-1] >= prices[0]
+    line_color = "#27ae60" if is_bullish else "#c0392b"
+    fill_color = "rgba(39, 174, 96, 0.15)" if is_bullish else "rgba(192, 57, 43, 0.15)"
+    
+    svg = f"""
+    <svg viewBox="0 0 {width} {height}" width="100%" height="100%" style="background: #131722; border-radius: 6px;">
+        <line x1="{padding}" y1="{padding}" x2="{width-padding}" y2="{padding}" stroke="#2a2e39" stroke-dasharray="4" />
+        <line x1="{padding}" y1="{height/2}" x2="{width-padding}" y2="{height/2}" stroke="#2a2e39" stroke-dasharray="4" />
+        <line x1="{padding}" y1="{height-padding}" x2="{width-padding}" y2="{height-padding}" stroke="#2a2e39" stroke-dasharray="4" />
+        
+        <polygon points="{area_points}" fill="{fill_color}" />
+        
+        <polyline fill="none" stroke="{line_color}" stroke-width="2.5" points="{poly_points}" />
+        
+        <text x="{width - padding - 5}" y="{padding + 12}" fill="#d1d4dc" font-size="11" text-anchor="end" font-family="sans-serif">${max_p:.2f}</text>
+        <text x="{width - padding - 5}" y="{height - padding - 5}" fill="#d1d4dc" font-size="11" text-anchor="end" font-family="sans-serif">${min_p:.2f}</text>
+    </svg>
+    """
+    return svg
+
 def scan_market():
     print("Starting daily market scan using Tiingo...")
     bullish_stocks = []
     start_date = (datetime.datetime.now() - datetime.timedelta(days=100)).strftime("%Y-%m-%d")
     
     fallback_chart = [
-        {"time": "2026-07-01", "open": 100, "high": 105, "low": 98, "close": 102},
-        {"time": "2026-07-02", "open": 102, "high": 108, "low": 101, "close": 107},
-        {"time": "2026-07-03", "open": 107, "high": 110, "low": 104, "close": 109},
-        {"time": "2026-07-06", "open": 109, "high": 112, "low": 108, "close": 111},
-        {"time": "2026-07-07", "open": 111, "high": 115, "low": 110, "close": 114}
+        {"time": "2026-07-01", "close": 100.0},
+        {"time": "2026-07-02", "close": 102.5},
+        {"time": "2026-07-03", "close": 101.0},
+        {"time": "2026-07-06", "close": 105.0},
+        {"time": "2026-07-07", "close": 108.2}
     ]
 
     for symbol, info in STOCKS_TO_SCAN.items():
@@ -89,13 +140,11 @@ def scan_market():
                 for day in data[-30:]:
                     chart_data.append({
                         "time": day["date"][:10],
-                        "open": round(day["open"], 2),
-                        "high": round(day["high"], 2),
-                        "low": round(day["low"], 2),
                         "close": round(day["close"], 2)
                     })
             
             technical_setup = f"📊 Chart Setup: Momentum breakout trending above the 50-day moving average (${round(ma_50, 2)})." if current_price >= ma_50 else f"📊 Chart Setup: Consolidating near the 50-day moving average (${round(ma_50, 2)})."
+            svg_chart = generate_svg_chart(chart_data)
 
             bullish_stocks.append({
                 "symbol": symbol,
@@ -110,7 +159,7 @@ def scan_market():
                 "target_mean": info["target_mean"],
                 "target_high": info["target_high"],
                 "technical_setup": technical_setup,
-                "chart_data": chart_data
+                "svg_chart": svg_chart
             })
         except Exception as e:
             print(f"Error with {symbol}: {e}")
@@ -124,10 +173,6 @@ def generate_html(stocks):
         
     highlight = stocks[0]
     others = stocks[1:]
-    
-    # Bundle all chart data into a clean dictionary
-    all_charts = {s['symbol']: s['chart_data'] for s in stocks}
-    all_charts_json = json.dumps(all_charts)
     
     others_html = ""
     for s in others:
@@ -152,8 +197,10 @@ def generate_html(stocks):
             <p class="info-row"><strong class="risk-text">Risk:</strong> {s['risk']}</p>
             
             <div class="technical-setup">{s['technical_setup']}</div>
-            <button class="btn-chart" id="btn-{s['symbol']}" onclick='showChart("{s['symbol']}")'>📊 View Chart</button>
-            <div id="chart-{s['symbol']}" class="chart-container"></div>
+            <button class="btn-chart" onclick="toggleChart('chart-{s['symbol']}')">📊 View Chart</button>
+            <div id="chart-{s['symbol']}" class="chart-container">
+                {s['svg_chart']}
+            </div>
         </div>
         """
 
@@ -163,7 +210,6 @@ def generate_html(stocks):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swing-Trade Radar</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         :root { --primary-color: #2c3e50; --accent-color: #1abc9c; --button-color: #3498db; --bg-color: #f4f7f6; --card-bg: #ffffff; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: var(--bg-color); padding: 10px; margin: 0; color: #333; }
@@ -186,7 +232,7 @@ def generate_html(stocks):
         .technical-setup { font-style: italic; color: #27ae60; font-weight: bold; margin-top: 15px; }
         button.btn-chart { background-color: var(--button-color); color: white; border: none; padding: 10px 14px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.95em; font-weight: bold; margin-top: 15px; transition: background 0.2s; }
         button.btn-chart:hover { background-color: #2980b9; }
-        .chart-container { width: 100%; height: 300px; margin-top: 15px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; }
+        .chart-container { width: 100%; margin-top: 15px; display: none; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; }
         @media (min-width: 650px) { body { padding: 20px; } .dashboard-container { padding: 30px; } button.btn-chart { width: auto; } .stock-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
@@ -224,8 +270,10 @@ def generate_html(stocks):
         
         <div class="technical-setup">HIGHLIGHT_TECHNICAL_PLACEHOLDER</div>
         
-        <button class="btn-chart" id="btn-HIGHLIGHT_SYMBOL_PLACEHOLDER" onclick='showChart("HIGHLIGHT_SYMBOL_PLACEHOLDER")'>📊 View Interactive Chart</button>
-        <div id="chart-HIGHLIGHT_SYMBOL_PLACEHOLDER" class="chart-container"></div>
+        <button class="btn-chart" onclick="toggleChart('chart-HIGHLIGHT_SYMBOL_PLACEHOLDER')">📊 View Interactive Chart</button>
+        <div id="chart-HIGHLIGHT_SYMBOL_PLACEHOLDER" class="chart-container">
+            HIGHLIGHT_SVG_CHART_PLACEHOLDER
+        </div>
     </div>
 
     <div class="section-title">🔍 Top OTHER_COUNT_PLACEHOLDER Other Candidates</div>
@@ -235,40 +283,13 @@ def generate_html(stocks):
 </div>
 
 <script>
-    const chartDatabase = ALL_CHARTS_JSON_PLACEHOLDER;
-
-    function showChart(symbol) {
-        const containerId = 'chart-' + symbol;
-        const buttonId = 'btn-' + symbol;
+    function toggleChart(containerId) {
         const chartContainer = document.getElementById(containerId);
-        
-        chartContainer.style.display = 'block';
-        document.getElementById(buttonId).style.display = 'none';
-        chartContainer.innerHTML = '';
-
-        const chart = LightweightCharts.createChart(chartContainer, {
-            width: chartContainer.clientWidth || 600,
-            height: 300,
-            layout: { textColor: '#d1d4dc', backgroundColor: '#131722' },
-            grid: { vertLines: { color: 'rgba(42, 46, 57, 0)' }, horzLines: { color: 'rgba(42, 46, 57, 0.6)' } },
-            timeScale: { timeVisible: false, borderColor: '#485c7b' }
-        });
-
-        const candleSeries = chart.addCandlestickSeries({
-            upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
-            wickUpColor: '#26a69a', wickDownColor: '#ef5350'
-        });
-        
-        candleSeries.setData(chartDatabase[symbol]);
-        chart.timeScale().fitContent();
-
-        setTimeout(() => {
-            chart.resize(chartContainer.clientWidth, 300);
-        }, 50);
-
-        window.addEventListener('resize', () => {
-            chart.resize(chartContainer.clientWidth, 300);
-        });
+        if (chartContainer.style.display === 'block') {
+            chartContainer.style.display = 'none';
+        } else {
+            chartContainer.style.display = 'block';
+        }
     }
 </script>
 
@@ -289,9 +310,9 @@ def generate_html(stocks):
     html_content = html_content.replace("HIGHLIGHT_TARGET_HIGH_PLACEHOLDER", highlight['target_high'])
     html_content = html_content.replace("HIGHLIGHT_RISK_PLACEHOLDER", highlight['risk'])
     html_content = html_content.replace("HIGHLIGHT_TECHNICAL_PLACEHOLDER", highlight['technical_setup'])
+    html_content = html_content.replace("HIGHLIGHT_SVG_CHART_PLACEHOLDER", highlight['svg_chart'])
     html_content = html_content.replace("OTHER_COUNT_PLACEHOLDER", str(len(others)))
     html_content = html_content.replace("OTHERS_HTML_PLACEHOLDER", others_html)
-    html_content = html_content.replace("ALL_CHARTS_JSON_PLACEHOLDER", all_charts_json)
 
     with open("index.html", "w", encoding="utf-8") as html_f:
         html_f.write(html_content)
